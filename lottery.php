@@ -1,44 +1,34 @@
 <?php
-header('Content-Type: application/json;charset=utf-8');
 
-class Lotto{
+function WinningNumbers(){
 
-    private $LotteryNumbers;
-    private $Matches;
+    $numbers = [];
 
-    public function randomizer(){
-
-        do{
-            $Num = rand(1,39);
-            $RandNumbers[] = $Num;
-            $UniqueNumbers = array_unique($RandNumbers);
-        } while (count($UniqueNumbers) < 5);
-        
-        sort($UniqueNumbers);
-        
-        $this->LotteryNumbers = $UniqueNumbers;
-        return $this->LotteryNumbers;
-    }
-
-    public function yourNum($first, $second, $third, $fourth, $fifth){
-
-        $yourNumbers = array($first, $second, $third, $fourth, $fifth);
-
-        sort($yourNumbers);
-
-        print_r($yourNumbers);
-        print_r($this->randomizer());
-
-        $this->Matches = 0;
-
-        foreach($yourNumbers as $y){
-            if(in_array($y, $this->LotteryNumbers)){
-                 $this->Matches++;
-            }
+    while(count($numbers) <= 4){
+        $rand = rand(1,39);
+        if(!in_array($rand, $numbers)){
+            $numbers[] += $rand;
         }
-        return "You got ".$this->Matches. " numbers correct!";
     }
+
+    return $numbers;
 }
 
-$lottery = new Lotto();
-echo $lottery->yourNum('1','4','3','5','2');
+function Lottery($first, $second, $third, $fourth, $fifth){
+
+    $yourNumbers = array($first, $second, $third, $fourth, $fifth);
+
+    $winningNumbers = WinningNumbers();
+
+    $Matches = 0;
+
+    foreach($yourNumbers as $y){
+        if(in_array($y, $winningNumbers)){
+            $Matches++;
+        }
+    }
+    return $Matches;
+}
+
+$result = Lottery(1,4,3,5,2);
+echo "You had {$result} matches!";
